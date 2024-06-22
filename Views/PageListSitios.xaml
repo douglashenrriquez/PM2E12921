@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PM0220242P.Views.PageListSitios"
+             xmlns:conver="clr-namespace:PM0220242P.Controllers"
+             BackgroundColor="#D0D3D4"
+             Title="Lista De Sitios">
+
+    <ContentPage.Resources>
+        <conver:Base64ToImage x:Key="BaseString" />
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Agregar" Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <CollectionView x:Name="listSitios"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Eliminar" 
+                                               BackgroundColor="Red" 
+                                               Command="{Binding Source={x:Reference listSitios}, Path=BindingContext.DeleteCommand}" 
+                                               CommandParameter="{Binding .}" />
+                                    <SwipeItem Text="Editar" 
+                                               BackgroundColor="Blue"                                              
+                                               Command="{Binding Source={x:Reference listSitios}, Path=BindingContext.EditCommand}" 
+                                               CommandParameter="{Binding .}" />
+                                    <SwipeItem Text="Mapa" 
+                                               BackgroundColor="Green" 
+                                               Command="{Binding Source={x:Reference listSitios}, Path=BindingContext.MapaCommand}" 
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame Padding="10" Margin="10,5" BorderColor="#e0e0e0" CornerRadius="10" BackgroundColor="White" HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Tapped="OnItemTapped"
+                                        NumberOfTapsRequired="1" />
+                                </Frame.GestureRecognizers>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Frame HeightRequest="80"
+                                           WidthRequest="80"
+                                           CornerRadius="40" 
+                                           HorizontalOptions="Center"
+                                           IsClippedToBounds="True"
+                                           Padding="0"
+                                           BorderColor="Gray"
+                                           Margin="0">
+                                        <Image Grid.Column="0"
+                                               x:Name="imagen"
+                                               Source="{Binding Foto, Converter={StaticResource BaseString}}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="80" 
+                                               WidthRequest="80" />
+                                    </Frame>
+
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding Descripcion}" FontSize="20" FontAttributes="Bold" TextColor="#333" />
+                                        <Label Text="{Binding Latitud}" FontSize="16" TextColor="#666" />
+                                        <Label Text="{Binding Longitud}" FontSize="16" TextColor="#666" />
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
